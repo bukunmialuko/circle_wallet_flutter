@@ -12,6 +12,8 @@ final class WalletSdkAdapter: NSObject {
         let key = "\(endPoint)|\(trimmedAppId)|\(enableBiometricsPin)"
 
         if !didSetProviders {
+            PopoverPresentationCrashGuard.install()
+
             WalletSdk.shared.setLayoutProvider(self)
             WalletSdk.shared.setErrorMessenger(self)
             WalletSdk.shared.setDelegate(self)
