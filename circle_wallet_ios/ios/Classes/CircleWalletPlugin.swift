@@ -68,10 +68,16 @@ public class CircleWalletPlugin: NSObject, FlutterPlugin {
         ) { response in
             switch response.result {
             case .success(let execResult):
-                result([
+                var payload: [String: Any] = [
                     "status": execResult.status.rawValue,
                     "resultType": execResult.resultType.rawValue
-                ])
+                ]
+                if let data = execResult.data {
+                    if let signature = data.signature { payload["signature"] = signature }
+                    if let signedTransaction = data.signedTransaction { payload["signedTransaction"] = signedTransaction }
+                    if let txHash = data.txHash { payload["txHash"] = txHash }
+                }
+                result(payload)
 
             case .failure(let error):
                 result(FlutterError(

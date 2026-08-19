@@ -9,7 +9,10 @@ Future<String> getPlatformName() async {
   return platformName;
 }
 
-/// Execute sdk circle action based on params.
+/// Runs a Circle challenge and returns its result.
+///
+/// See [CircleWalletPlatform.execute] for the shape of the returned map and
+/// which fields are optional.
 Future<Map<String, dynamic>> execute({
   required String appId,
   required String userToken,

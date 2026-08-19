@@ -34,7 +34,25 @@ abstract class CircleWalletPlatform extends PlatformInterface {
   /// Return the current platform name.
   Future<String?> getPlatformName();
 
-  /// Return the result of challenge execution.
+  /// Runs a Circle challenge and returns the result of challenge execution.
+  ///
+  /// The returned map may contain:
+  /// - `status`: the challenge's terminal status (e.g. `COMPLETE`, `FAILED`).
+  /// - `resultType`: the type of challenge that was executed.
+  /// - `signature`: present for signing challenges.
+  /// - `signedTransaction`: present for signing challenges.
+  /// - `txHash`: the on-chain transaction hash, present only for transaction
+  ///   (transfer) challenges.
+  ///
+  /// Every field beyond `status`/`resultType` is optional: a key is absent,
+  /// or its value is `null`, whenever the SDK did not populate it for that
+  /// challenge type. `txHash` in particular is only ever meaningful for
+  /// transaction challenges — do not expect it for signing-only challenges.
+  ///
+  /// UNVERIFIED: whether `txHash` becomes available as soon as the
+  /// transaction is submitted, or only once it is confirmed on chain, has
+  /// not been established against a live challenge. Until this is verified,
+  /// do not treat the presence of `txHash` as proof of on-chain confirmation.
   Future<Map<String, dynamic>> execute({
     required String appId,
     required String userToken,
